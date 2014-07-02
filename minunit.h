@@ -171,6 +171,19 @@ static void (*minunit_teardown)(void) = NULL;
 	}\
 )
 
+#define mu_assert_uint_eq(expected, result) MU__SAFE_BLOCK(\
+	minunit_assert++;\
+	int minunit_tmp_e = (expected);\
+	int minunit_tmp_r = (result);\
+	if (minunit_tmp_e != minunit_tmp_r) {\
+		snprintf(minunit_last_message, MINUNIT_MESSAGE_LEN, "%s failed:\n\t%s:%u: %u expected but was %u", __func__, __FILE__, __LINE__, minunit_tmp_e, minunit_tmp_r);\
+		minunit_status = 1;\
+		return;\
+	} else {\
+		printf(".");\
+	}\
+)
+
 #define mu_assert_double_eq(expected, result) MU__SAFE_BLOCK(\
 	minunit_assert++;\
 	double minunit_tmp_e = (expected);\
